@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CSS에서 형제요소 개수 찾기</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>flexbox사용하지 않고 형제 요소의 너비폭 일정하게 지정하기</h1>
+    <p>이 방법은 flexbox의 사용이 불가할 때, css로 형제요소의 개수를 알아내고 그에따라 width값을 적용하여 디바이스의 너비폭을 일정하게 채우는 방법입니다.</p>
+
+    <h2>예시</h2>
+    <ul>
+        <li>1</li>
+      </ul>
+      
+      <ul>
+        <li>1</li>
+        <li>2</li>
+      </ul>
+      
+      <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+      </ul>
+      
+      <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+      </ul>
+      <h3>코드</h3>
+      <pre>
+        <strong>HTML</strong>
+
+        &lt;ul&gt;
+            &lt;li&gt;1&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;ul&gt;
+            &lt;li&gt;1&lt;/li&gt;
+            &lt;li&gt;2 &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;ul&gt;
+            &lt;li&gt;1&lt;/li&gt;
+            &lt;li&gt;2&lt;/li&gt;
+            &lt;li&gt;3&lt;/li&gt;
+        &lt;/ul &gt;
+        &lt;ul&gt;
+            &lt;li&gt;1&lt;/li&gt;
+            &lt;li&gt;2 &lt;/li&gt;
+            &lt;li&gt;3&lt;/li&gt;
+            &lt;li&gt;4&lt;/li&gt;
+        &lt;/ul&gt; 
+
+        <strong>CSS</strong>
+    
+        ul{
+        padding: 0 1em;
+        margin: 1em 0;
+        list-style: none;
+        }
+        
+        ul:after {
+        display: block;
+        content: "";
+        clear: both;
+        }
+        
+        li {
+        float: left;
+        outline: 2px solid gray;
+        font-weight: bold;
+        text-align: center;
+        line-height: 2;
+        }
+
+        /* one item */
+        li:first-child:nth-last-child(1) {
+            width: 100%;
+            background-color: hsl(0,100%,80%);
+        }
+        
+        /* two items */
+        li:first-child:nth-last-child(2),
+        li:first-child:nth-last-child(2) ~ li {
+            width: 50%;
+            background-color: hsl(60,100%,80%);
+        }
+        
+        /* three items */
+        li:first-child:nth-last-child(3),
+        li:first-child:nth-last-child(3) ~ li {
+            width: 33.3333%;
+            background-color: hsl(120,100%,80%);
+        }
+        
+        /* four items */
+        li:first-child:nth-last-child(4),
+        li:first-child:nth-last-child(4) ~ li {
+            width: 25%;
+            background-color: hsl(180,100%,80%);
+        }
+
+        <strong>SASS</strong>
+
+        @mixin space-out($min, $max) {
+            @for $i from $min through $max {
+              &:first-child:nth-last-child(#{$i}),
+              &:first-child:nth-last-child(#{$i}) ~ & {
+                width: 1 / $i * 100%;
+              }
+            }
+          }
+          
+          li {
+            @include space-out(1, 4);
+          }
+      </pre>
+      <a href="https://www.growingwiththeweb.com/2014/06/detecting-number-of-siblings-with-css.html">원문링크</a>
+</body>
+</html>
